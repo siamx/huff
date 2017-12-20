@@ -2,5 +2,5 @@
 cmake-build-debug
 Huffman_compression_Decompression
 *.huff
-*.txt
+*.txt.*
 huff
