@@ -1,0 +1,3 @@
+DFA_Reducer::DFA_Reducer(Graph*dfa,set<char>language_chars)
+a                    b                    c                  d
+e                    f                    g                  h
