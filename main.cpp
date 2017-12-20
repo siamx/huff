@@ -6,34 +6,33 @@ void run_encoding();
 void run_decoding();
 
 int main(int argc, char **argv) {
-//    string file_name;
-//    if (argc == 2) {
-//        cout << "Compressing..\n";
-//        file_name = argv[1];
-//        My_File my_file = read_file(file_name);
-//        Huffman huffman(my_file.freq);
-//        string compressed = huffman.encode(my_file.content);
-//        write_encoded_file(file_name, compressed, huffman.get_codes());
-//    } else if (argc == 3) {
-//        string flag = argv[1];
-//        if (flag != "-x") {
-//            cout << "invalid params only -x is valid\n";
-//            exit(1);
-//        }
-//        cout << "Extracting..\n";
-//        file_name = argv[2];
-//        My_File my_file = read_encoded_file(file_name);
-//        Huffman huffman(my_file.code);
-//        vector<int> original_file = huffman.decode(my_file.content);
-//        write_file("src.txt.decoded.", original_file);
-//    } else {
-//        cout << "invalid params\nCompress file -> ./huff [file name]\nExtract file  -> ./huff -x [file name]\n\n";
-//        exit(1);
-//    }
+    string file_name;
+    if (argc == 2) {
+        cout << "Compressing..\n";
+        file_name = argv[1];
+        My_File my_file = read_file(file_name);
+        Huffman huffman(my_file.freq);
+        string compressed = huffman.encode(my_file.content);
+        write_encoded_file(file_name, compressed, huffman.get_codes());
+    } else if (argc == 3) {
+        string flag = argv[1];
+        if (flag != "-x") {
+            cout << "invalid params only -x is valid\n";
+            exit(1);
+        }
+        cout << "Extracting..\n";
+        file_name = argv[2];
+        My_File my_file = read_encoded_file(file_name);
+        Huffman huffman(my_file.code);
+        vector<int> original_file = huffman.decode(my_file.content);
+        write_file(file_name.substr(file_name.find_first_of('.')), original_file);
+    } else {
+        cout << "invalid params\nCompress file -> ./huff [file name]\nExtract file  -> ./huff -x [file name]\n\n";
+        exit(1);
+    }
 
-    run_encoding();
-
-    run_decoding();
+//    run_encoding();
+//    run_decoding();
     return 0;
 }
 
