@@ -10,8 +10,7 @@ Huffman::Huffman(map<string, int> loaded_codes) {
     // print loaded codes
     cout << "\n\nLoaded codes:\n";
     for (pair<string, char> code: this->loaded_codes)
-        cout << code.second << ": " << code.first << endl;
-
+        cout << code.second << "  " << code.first << endl;
     cout << "\n\n";
 }
 
@@ -57,8 +56,8 @@ string Huffman::get_codes() {
     codes += string(to_string(this->generated_codes.size()) + "\n");
     for (pair<char, string> code: this->generated_codes) {
         codes.push_back(code.first);
-        codes += (": " + code.second);
-        codes.push_back('\n');
+        string old_code = bitset<8>((unsigned int) code.first).to_string();
+        codes += ("  " + old_code + "  " + code.second + "\n");
     }
     return codes + "\n";
 }
@@ -73,7 +72,8 @@ void Huffman::__print(Node *node, const string &code_str) {
     if (!node) return;
 
     if (node->data != INTERNAL) {
-        cout << node->data << ": " << code_str << "\n";
+        string old_code = bitset<8>((unsigned int) node->data).to_string();
+        cout << node->data << "  " << old_code << "  " << code_str << "\n";
         this->generated_codes[node->data] = code_str;
     }
 

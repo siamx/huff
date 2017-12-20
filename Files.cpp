@@ -51,9 +51,9 @@ My_File read_encoded_file(const string &file_name) {
     in >> cnt;
     map<string, int> codes;
     while (cnt--) {
-        string key, value;
-        in >> key >> value;
-        codes[value] = key[0];
+        string key, code, new_code;
+        in >> key >> code >> new_code;
+        codes[new_code] = key[0];
     }
 
     in >> str;
