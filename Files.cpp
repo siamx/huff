@@ -28,7 +28,7 @@ My_File read_file(const string &file_name) {
 }
 
 void write_file(const string &file_name, vector<int> &content) {
-    ofstream out(file_name.substr(0, file_name.find_last_of('.')), ios::out);
+    ofstream out(file_name, ios::out);
     for (int i: content) {
         if (i == SPACE) out << " ";
         else if (i == NEW_LINE) out << endl;
@@ -40,9 +40,9 @@ void write_file(const string &file_name, vector<int> &content) {
 
 My_File read_encoded_file(const string &file_name) {
     ifstream in(file_name, ios::in);
-    string check;
-    in >> check;
-    if (check != ENCODED) {
+    string str;
+    in >> str;
+    if (str != ENCODED) {
         cout << "Unrecognized encoding format.\n";
         exit(1);
     }
@@ -56,15 +56,22 @@ My_File read_encoded_file(const string &file_name) {
         codes[value] = key[0];
     }
 
+    in >> str;
+    int c;
+    string bin_str;
     queue<int> content;
-    while (true) {
-        int c = in.get();
-        if (c == EOF) break;
-        if (c == '\n' || c == ' ' || c == '\t') continue;
-        string decoded = decode(c);
-        for (int bin: decoded)
+
+    for (unsigned int i = 0; i < str.length() - 1; i++) {
+        c = str[i];
+        bin_str = decode(c);
+        for (int bin: bin_str)
             content.push(bin);
     }
+    // trim leading zeroes in last hex for more precision
+    c = str[str.length() - 1];
+    bin_str = decode(c);
+    for (int bin: bin_str.substr(bin_str.find_first_of('1')))
+        content.push(bin);
 
     My_File my_file;
     my_file.content = content;
