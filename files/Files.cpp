@@ -61,17 +61,11 @@ My_File read_encoded_file(const string &file_name) {
     string bin_str;
     queue<int> content;
 
-    for (unsigned int i = 0; i < str.length() - 1; i++) {
-        c = str[i];
-        bin_str = decode(c);
+    for (char i : str) {
+        bin_str = decode(i);
         for (int bin: bin_str)
             content.push(bin);
     }
-    // trim leading zeroes in last hex for more precision
-    c = str[str.length() - 1];
-    bin_str = decode(c);
-    for (int bin: bin_str.substr(bin_str.find_first_of('1')))
-        content.push(bin);
 
     My_File my_file;
     my_file.content = content;
