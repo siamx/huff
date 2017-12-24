@@ -30,11 +30,12 @@ void tree(const string &path) {
 
         }
         closedir(dir);
-    }
+    } else
+        dir_files.insert(path);
 }
 
 int main(int argc, char **argv) {
-    tree("test");
+    tree("src.txt");
 
 //    string file_name;
 //    if (argc == 2) {
@@ -61,7 +62,7 @@ int main(int argc, char **argv) {
 //        exit(1);
 //    }
     for (const string &s: dir_files) {
-        if(extension(s) == EXTENSION || extension(s) == ".decoded") continue;
+        if (extension(s) == EXTENSION || extension(s) == ".decoded") continue;
         run_encoding(s);
         run_decoding(s + EXTENSION);
     }
@@ -69,7 +70,7 @@ int main(int argc, char **argv) {
 }
 
 void run_encoding(const string &file_path) {
-    if(extension(file_path) == EXTENSION) return;
+    if (extension(file_path) == EXTENSION) return;
 
     My_File file = read_file(file_path);
 
