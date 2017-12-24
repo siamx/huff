@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
 //        cout << "Extracting..\n";
 //        file_name = argv[2];
 //        My_File my_file = read_encoded_file(file_name);
-//        Huffman huffman(my_file.code);
+//        Huffman huffman(my_file.loaded_codes);
 //        vector<int> original_file = huffman.decode(my_file.content);
 //        write_file(file_name.substr(file_name.find_last_of('.')), original_file);
 //    } else {
@@ -86,7 +86,7 @@ void run_decoding(const string &file_path) {
 
     My_File my_file = read_encoded_file(file_path);
 
-    Huffman huffman(my_file.code);
+    Huffman huffman(my_file.loaded_codes);
 
     vector<int> original_file = huffman.decode(my_file.content);
 

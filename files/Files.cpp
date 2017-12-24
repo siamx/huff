@@ -54,11 +54,11 @@ My_File read_encoded_file(const string &file_name) {
 
     int cnt = 0;
     in >> cnt;
-    map<string, int> codes;
+    map<string, int> loaded_codes;
     while (cnt--) {
         string key, code, new_code;
         in >> key >> code >> new_code;
-        codes[new_code] = key[0];
+        loaded_codes[new_code] = key[0];
     }
 
     queue<int> content;
@@ -86,7 +86,7 @@ My_File read_encoded_file(const string &file_name) {
 
     My_File my_file;
     my_file.content = content;
-    my_file.code = codes;
+    my_file.loaded_codes = loaded_codes;
     return my_file;
 }
 

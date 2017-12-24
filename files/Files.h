@@ -19,7 +19,7 @@
 using namespace std;
 
 typedef struct {
-    map<string, int> code;
+    map<string, int> loaded_codes;
     map<int, int> freq;
     queue<int> content;
 } My_File;

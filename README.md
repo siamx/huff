@@ -1,11 +1,20 @@
-# Huffman-compression/Decompression text files
-* To compress a FILE (Decompress again Auto) :
-   - Copy the content of your file to "src.txt" 
-   - "dest.bin" has Huffman code of your file 
-   - "decoded.txt" is the decompressed file
+# Huffman compression
 
-* To compress a FOLDER (Decompress again Auto) :
-   - Just copy your files to "files" folder.
-   - "src.txt"  have the content of all text files
-   - "dest.bin" has Huffman code of your file 
-   
+* build 
+    ```bash
+    make
+    ```
+
+* compress
+    ```bash
+    # ./huff [input file] [output file]
+    
+    ./huff src.txt src.compressed
+    ```
+    
+* extract
+    ```bash
+    # ./huff -x [input file] [output file]
+
+    ./huff -x src.compressed src.txt
+    ```
