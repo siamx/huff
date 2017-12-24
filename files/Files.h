@@ -34,6 +34,5 @@ void write_encoded_file(const string &file_name, const string &content, const st
 
 void compare_file_size(const string &file_name);
 
-string decode(int hex);
 
 #endif //HUFFMAN_COMPRESSION_DECOMPRESSION_FILES_H

@@ -39,6 +39,10 @@ void write_file(const string &file_name, vector<int> &content) {
     out.close();
 }
 
+string char_to_bits(char c) {
+    return bitset<8>((unsigned char) c).to_string();
+}
+
 My_File read_encoded_file(const string &file_name) {
     ifstream in(file_name, ios::in);
     string str;
@@ -57,13 +61,27 @@ My_File read_encoded_file(const string &file_name) {
         codes[new_code] = key[0];
     }
 
-    in >> str;
     queue<int> content;
+    string binary_str;
+    bool line_cnt = false;
 
-    for (char i : str) {
-        string bin_str = decode(i);
-        for (int bin: bin_str)
-            content.push(bin);
+//     discard the dummy new line
+    getline(in, str);
+    getline(in, str);
+
+    while (getline(in, str)) {
+        if (line_cnt) {
+            binary_str = char_to_bits('\n');
+            for (int bin: binary_str)
+                content.push(bin);
+        }
+
+        line_cnt = true;
+        for (char &i : str) {
+            binary_str = char_to_bits(i);
+            for (int bin: binary_str)
+                content.push(bin);
+        }
     }
 
     My_File my_file;
@@ -79,22 +97,24 @@ void write_encoded_file(const string &file_name, const string &content, const st
     string str_to_int;
     for (char c: content) {
         str_to_int.push_back(c);
-        if (str_to_int.size() == 4) {
-            out << hex << stoi(str_to_int, nullptr, 2);
+        if (str_to_int.size() == 8) {
+            out << (char) stoi(str_to_int, nullptr, 2);
             str_to_int = "";
         }
     }
 
-    if (!str_to_int.empty())
-        out << stoi(str_to_int, nullptr, 2) << endl;
+    if (!str_to_int.empty()) {
+        while (str_to_int.size() < 8)
+            str_to_int.push_back('0');
+        out << (char) stoi(str_to_int, nullptr, 2);
+    }
 
     out.close();
-
     compare_file_size(file_name);
 }
 
 void compare_file_size(const string &file_name) {
-    double original = -1, compressed = -1;
+    double original = 0, compressed = 0;
     struct stat st{};
 
     if (stat(file_name.c_str(), &st) == 0)
@@ -106,27 +126,4 @@ void compare_file_size(const string &file_name) {
     cout << "\n\n" << file_name << " size: " << original / 1024 << " KB\n";
     cout << file_name << EXTENSION << " size: " << compressed / 1024 << " KB\n";
     cout << "Compression Ratio: " << (original - compressed) / original * 100 << " %\n\n";
-}
-
-string decode(int hex) {
-    if (hex == '0') return "0000";
-    else if (hex == '1') return "0001";
-    else if (hex == '2') return "0010";
-    else if (hex == '3') return "0011";
-    else if (hex == '4') return "0100";
-    else if (hex == '5') return "0101";
-    else if (hex == '6') return "0110";
-    else if (hex == '7') return "0111";
-    else if (hex == '8') return "1000";
-    else if (hex == '9') return "1001";
-    else if (hex == 'a') return "1010";
-    else if (hex == 'b') return "1011";
-    else if (hex == 'c') return "1100";
-    else if (hex == 'd') return "1101";
-    else if (hex == 'e') return "1110";
-    else if (hex == 'f') return "1111";
-    else {
-        cout << "unknown encoded char:" << hex << "\n";
-        exit(1);
-    }
 }
