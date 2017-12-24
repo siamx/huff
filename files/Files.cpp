@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <cstring>
 #include <iomanip>
+#include <bitset>
 #include "Files.h"
 
 My_File read_file(const string &file_name) {
@@ -57,12 +58,10 @@ My_File read_encoded_file(const string &file_name) {
     }
 
     in >> str;
-    int c;
-    string bin_str;
     queue<int> content;
 
     for (char i : str) {
-        bin_str = decode(i);
+        string bin_str = decode(i);
         for (int bin: bin_str)
             content.push(bin);
     }
