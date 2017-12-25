@@ -6,9 +6,17 @@
 #define HUFFMAN_COMPRESSION_DECOMPRESSION_HUFFMAN_H
 
 
+#include <map>
+#include <vector>
+#include <queue>
+#include <iostream>
+#include <bitset>
+#include <algorithm>
 #include "Node.h"
 
 #define ENCODED "\\\\ENCODED\\\\"
+
+using namespace std;
 
 class Huffman {
 public:

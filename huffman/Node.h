@@ -6,11 +6,7 @@
 #define HUFFMAN_COMPRESSION_DECOMPRESSION_NODE_H
 
 
-#include <bits/stdc++.h>
-
 #define INTERNAL '~'
-
-using namespace std;
 
 class Node {
 public:

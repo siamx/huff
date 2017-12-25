@@ -1,4 +1,5 @@
 #include <dirent.h>
+#include <set>
 #include "huffman/Huffman.h"
 #include "files/Files.h"
 
