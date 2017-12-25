@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
 //    } else if (argc == 3) {
 //        string flag = argv[1];
 //        if (flag != "-x") {
-//            cout << "invalid params only -x is valid\n";
+//            cout << "invalid params only -x is not_valid\n";
 //            exit(1);
 //        }
 //        cout << "Extracting..\n";
@@ -70,8 +70,6 @@ int main(int argc, char **argv) {
 }
 
 void run_encoding(const string &file_path) {
-    if (extension(file_path) == EXTENSION) return;
-
     My_File file = read_file(file_path);
 
     Huffman huffman(file.freq);
@@ -82,13 +80,13 @@ void run_encoding(const string &file_path) {
 }
 
 void run_decoding(const string &file_path) {
-    if (extension(file_path) != EXTENSION) return;
-
     My_File my_file = read_encoded_file(file_path);
+
+    if (my_file.not_valid) return;
 
     Huffman huffman(my_file.loaded_codes);
 
     vector<int> original_file = huffman.decode(my_file.content);
 
-    write_file(file_path.substr(0, file_path.find_last_of('.')) + ".decoded", original_file);
+    write_file(file_path.substr(0, file_path.find_last_of('.')), original_file);
 }

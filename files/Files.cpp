@@ -10,9 +10,9 @@
 #include <bitset>
 #include "Files.h"
 
-My_File read_file(const string &file_name) {
+My_File read_file(const string &in_file) {
     My_File file = My_File();
-    ifstream in(file_name);
+    ifstream in(in_file);
 
     while (true) {
         int c = in.get();
@@ -28,8 +28,8 @@ My_File read_file(const string &file_name) {
     return file;
 }
 
-void write_file(const string &file_name, vector<int> &content) {
-    ofstream out(file_name, ios::out);
+void write_file(const string &out_file, vector<int> &content) {
+    ofstream out(out_file, ios::out);
     for (int i: content) {
         if (i == SPACE) out << " ";
         else if (i == NEW_LINE) out << endl;
@@ -43,11 +43,13 @@ string char_to_bits(char c) {
     return bitset<8>((unsigned char) c).to_string();
 }
 
-My_File read_encoded_file(const string &file_name) {
-    ifstream in(file_name, ios::in);
+My_File read_encoded_file(const string &in_file) {
+    ifstream in(in_file, ios::in);
     string str;
+    My_File my_file;
     in >> str;
     if (str != ENCODED) {
+        my_file.not_valid = true;
         cout << "Unrecognized encoding format.\n";
         exit(1);
     }
@@ -84,14 +86,14 @@ My_File read_encoded_file(const string &file_name) {
         }
     }
 
-    My_File my_file;
+    my_file.not_valid = false;
     my_file.content = content;
     my_file.loaded_codes = loaded_codes;
     return my_file;
 }
 
-void write_encoded_file(const string &file_name, const string &content, const string &codes) {
-    ofstream out(file_name + EXTENSION, ios::out);
+void write_encoded_file(const string &out_file, const string &content, const string &codes) {
+    ofstream out(out_file + EXTENSION, ios::out);
     out << codes;
 
     string str_to_int;
@@ -110,7 +112,7 @@ void write_encoded_file(const string &file_name, const string &content, const st
     }
 
     out.close();
-    compare_file_size(file_name);
+    compare_file_size(out_file);
 }
 
 void compare_file_size(const string &file_name) {

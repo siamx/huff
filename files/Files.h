@@ -19,18 +19,19 @@
 using namespace std;
 
 typedef struct {
+    bool not_valid;
     map<string, int> loaded_codes;
     map<int, int> freq;
     queue<int> content;
 } My_File;
 
-My_File read_file(const string &file_name);
+My_File read_file(const string &in_file);
 
-void write_file(const string &file_name, vector<int> &content);
+void write_file(const string &out_file, vector<int> &content);
 
-My_File read_encoded_file(const string &file_name);
+My_File read_encoded_file(const string &in_file);
 
-void write_encoded_file(const string &file_name, const string &content, const string &codes);
+void write_encoded_file(const string &out_file, const string &content, const string &codes);
 
 void compare_file_size(const string &file_name);
 
