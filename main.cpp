@@ -1,5 +1,4 @@
 #include <dirent.h>
-#include <zconf.h>
 #include "huffman/Huffman.h"
 #include "files/Files.h"
 
