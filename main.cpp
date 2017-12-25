@@ -35,7 +35,7 @@ void tree(const string &path) {
 }
 
 int main(int argc, char **argv) {
-    tree("src.txt");
+    tree("test");
 
 //    string file_name;
 //    if (argc == 2) {
@@ -61,10 +61,10 @@ int main(int argc, char **argv) {
 //        cout << "invalid params\nCompress file -> ./huff [file name]\nExtract file  -> ./huff -x [file name]\n\n";
 //        exit(1);
 //    }
-    for (const string &s: dir_files) {
-        if (extension(s) == EXTENSION || extension(s) == ".decoded") continue;
-        run_encoding(s);
-        run_decoding(s + EXTENSION);
+    for (const string &file_name: dir_files) {
+        if (extension(file_name) == EXTENSION) continue;
+        run_encoding(file_name);
+        run_decoding(file_name + EXTENSION);
     }
     return 0;
 }
