@@ -59,7 +59,7 @@ string Huffman::get_codes() {
         string old_code = bitset<8>((unsigned int) code.first).to_string();
         codes += ("  " + old_code + "  " + code.second + "\n");
     }
-    return codes + "\n";
+    return codes;
 }
 
 void Huffman::__build_freq_map(map<int, int> reversed_freq_map) {
