@@ -22,7 +22,7 @@ typedef struct {
     bool not_valid;
     map<string, int> loaded_codes;
     map<int, int> freq;
-    queue<int> content;
+    deque<int> content;
 } My_File;
 
 My_File read_file(const string &in_file);

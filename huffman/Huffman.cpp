@@ -23,12 +23,12 @@ Huffman::Huffman(map<int, int> reversed_freq_map) {
     cout << "\n\n";
 }
 
-vector<int> Huffman::decode(queue<int> encoded_file) {
+vector<int> Huffman::decode(deque<int> encoded_file) {
     string encoded_str;
     vector<int> decoded_str;
     while (!encoded_file.empty()) {
         encoded_str.push_back((char) encoded_file.front());
-        encoded_file.pop();
+        encoded_file.pop_front();
 
         if (this->loaded_codes.find(encoded_str) != this->loaded_codes.end()) {
             decoded_str.push_back(this->loaded_codes[encoded_str]);
@@ -39,11 +39,11 @@ vector<int> Huffman::decode(queue<int> encoded_file) {
     return decoded_str;
 }
 
-string Huffman::encode(queue<int> str) {
+string Huffman::encode(deque<int> str) {
     string encoded_str;
     while (!str.empty()) {
         int c = str.front();
-        str.pop();
+        str.pop_front();
         encoded_str += this->generated_codes[c];
     }
     return encoded_str;

@@ -20,7 +20,7 @@ My_File read_file(const string &in_file) {
         if (c == ' ') c = SPACE;
         if (c == '\n') c = NEW_LINE;
         if (c == '\t') c = TAB;
-        file.content.push(c);
+        file.content.push_back(c);
         file.freq[c]++;
     }
 
@@ -63,26 +63,26 @@ My_File read_encoded_file(const string &in_file) {
         loaded_codes[new_code] = key[0];
     }
 
-    queue<int> content;
+
+    in >> cnt;          // read number of bits
+    getline(in, str);   // discard the new line char '\n'
+
+    deque<int> content;
     string binary_str;
     bool line_cnt = false;
-
-//     discard the dummy new line
-    getline(in, str);
-    getline(in, str);
 
     while (getline(in, str)) {
         if (line_cnt) {
             binary_str = char_to_bits('\n');
             for (int bin: binary_str)
-                content.push(bin);
+                content.push_back(bin);
         }
 
         line_cnt = true;
         for (char &i : str) {
             binary_str = char_to_bits(i);
             for (int bin: binary_str)
-                content.push(bin);
+                content.push_back(bin);
         }
     }
 
@@ -95,7 +95,7 @@ My_File read_encoded_file(const string &in_file) {
 void write_encoded_file(const string &out_file, const string &content, const string &codes) {
     ofstream out(out_file + EXTENSION, ios::out);
     out << codes;
-
+    out << content.size() << endl;
     string str_to_int;
     for (char c: content) {
         str_to_int.push_back(c);

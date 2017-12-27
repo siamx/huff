@@ -26,9 +26,9 @@ public:
 
     string get_codes();
 
-    vector<int> decode(queue<int> encoded_file);
+    vector<int> decode(deque<int> encoded_file);
 
-    string encode(queue<int> str);
+    string encode(deque<int> str);
 
 private:
     Node *root;
