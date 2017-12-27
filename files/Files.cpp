@@ -51,7 +51,7 @@ My_File read_encoded_file(const string &in_file) {
     if (str != ENCODED) {
         my_file.not_valid = true;
         cout << "Unrecognized encoding format.\n";
-        exit(1);
+        return my_file;
     }
 
     int cnt = 0;
