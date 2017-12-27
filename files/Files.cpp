@@ -86,6 +86,9 @@ My_File read_encoded_file(const string &in_file) {
         }
     }
 
+    while (content.size() > cnt)
+        content.pop_back();
+
     my_file.not_valid = false;
     my_file.content = content;
     my_file.loaded_codes = loaded_codes;
