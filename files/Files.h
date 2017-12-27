@@ -33,7 +33,7 @@ My_File read_encoded_file(const string &in_file);
 
 void write_encoded_file(const string &out_file, const string &content, const string &codes);
 
-void compare_file_size(const string &file_name);
+void compare_file_size(const string &in_file, const string &out_file);
 
 
 #endif //HUFFMAN_COMPRESSION_DECOMPRESSION_FILES_H

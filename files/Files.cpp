@@ -96,7 +96,7 @@ My_File read_encoded_file(const string &in_file) {
 }
 
 void write_encoded_file(const string &out_file, const string &content, const string &codes) {
-    ofstream out(out_file + EXTENSION, ios::out);
+    ofstream out(out_file, ios::out);
     out << codes;
     out << content.size() << endl;
     string str_to_int;
@@ -115,20 +115,19 @@ void write_encoded_file(const string &out_file, const string &content, const str
     }
 
     out.close();
-    compare_file_size(out_file);
 }
 
-void compare_file_size(const string &file_name) {
+void compare_file_size(const string &in_file, const string &out_file) {
     double original = 0, compressed = 0;
     struct stat st{};
 
-    if (stat(file_name.c_str(), &st) == 0)
+    if (stat(in_file.c_str(), &st) == 0)
         original = st.st_size;
 
-    if (stat((file_name + EXTENSION).c_str(), &st) == 0)
+    if (stat(out_file.c_str(), &st) == 0)
         compressed = st.st_size;
 
-    cout << "\n\n" << file_name << " size: " << original / 1024 << " KB\n";
-    cout << file_name << EXTENSION << " size: " << compressed / 1024 << " KB\n";
+    cout << "\n\n" << in_file << " size: " << original / 1024 << " KB\n";
+    cout << out_file << " size: " << compressed / 1024 << " KB\n";
     cout << "Compression Ratio: " << (original - compressed) / original * 100 << " %\n\n";
 }
