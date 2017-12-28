@@ -13,24 +13,25 @@ void run_encoding(const string &in_file, const string &out_file);
 void run_decoding(const string &in_file, const string &out_file);
 
 void help() {
-    cout << "*** Huffman codes ***" << endl
-         << "Author: Ahmed Lotfy Siam" << endl
-         << "https://github.com/siamx/huff" << endl << endl
+    cout << endl
+         << "*** Huffman codes ***" << endl
+         << "Author:  Ahmed Lotfy Siam" << endl
+         << "Github:  https://github.com/siamx/huff" << endl << endl
          << "Usage:" << endl
-         << "    ./huff <flag> <input-file> <output-file>" << endl << endl
+         << "        ./huff  <flag>  <input-file>  <output-file>" << endl << endl
          << "Flags:" << endl
-         << "    -e | --encode" << endl
-         << "        Compress input file." << endl
-         << "    -d | --decode" << endl
-         << "        Extract input file." << endl;;
+         << "        -e | --encode" << endl
+         << "                Compress input file." << endl << endl
+         << "        -d | --decode" << endl
+         << "                Extract input file." << endl << endl;
+}
+
+bool exist(const string &file) {
+    struct stat st{};
+    return stat(file.c_str(), &st) != -1;
 }
 
 void tree(const string &path);
-
-bool exist(const string &file) {
-    struct stat st = {0};
-    return stat(file.c_str(), &st) != -1;
-}
 
 void tree(const string &path) {
     DIR *dir;
@@ -47,6 +48,22 @@ void tree(const string &path) {
 }
 
 int main(int argc, char **argv) {
+    string in = "test", out = "test-encoded", flag = "encode";
+
+    if (argc == 3) {
+        in = argv[2];
+        out = argv[3];
+    } else if (argc == 4) {
+        flag = argv[1];
+        in = argv[2];
+        out = argv[3];
+    }
+//    else {
+//        cout << "invalid args\n";
+//        help();
+//        exit(1);
+//    }
+
     function_pointer["-d"] = run_decoding;
     function_pointer["--decode"] = run_decoding;
     function_pointer["decode"] = run_decoding;
@@ -55,8 +72,6 @@ int main(int argc, char **argv) {
     function_pointer["-e"] = run_encoding;
     function_pointer["--encode"] = run_encoding;
     function_pointer["encode"] = run_encoding;
-
-    string in = "test.huff", out = "test", flag = "decode";
 
     tree(in);
 
