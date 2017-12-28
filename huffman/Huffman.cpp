@@ -2,6 +2,7 @@
 // Created by ahmed on 12/15/17.
 //
 
+#include <iomanip>
 #include "Huffman.h"
 
 Huffman::Huffman(map<string, int> loaded_codes) {
@@ -9,8 +10,8 @@ Huffman::Huffman(map<string, int> loaded_codes) {
 
     // print loaded codes
     cout << "\n\nLoaded codes:\n";
-    for (pair<string, char> code: this->loaded_codes)
-        cout << code.second << "  " << code.first << endl;
+    for (pair<string, int> code: this->loaded_codes)
+        cout << left << setw(4) << code.second << "  " << code.first << endl;
     cout << "\n\n";
 }
 
@@ -44,7 +45,10 @@ string Huffman::encode(deque<int> str) {
     while (!str.empty()) {
         int c = str.front();
         str.pop_front();
-        encoded_str += this->generated_codes[c];
+        if (generated_codes.find(c) == generated_codes.end()) {
+            cout << "input value with no code found: " << c << endl;
+        } else
+            encoded_str += this->generated_codes[c];
     }
     return encoded_str;
 }
@@ -54,10 +58,9 @@ string Huffman::get_codes() {
     codes += ENCODED;
     codes.push_back('\n');
     codes += string(to_string(this->generated_codes.size()) + "\n");
-    for (pair<char, string> code: this->generated_codes) {
-        codes.push_back(code.first);
+    for (pair<int, string> code: this->generated_codes) {
         string old_code = bitset<8>((unsigned int) code.first).to_string();
-        codes += ("  " + old_code + "  " + code.second + "\n");
+        codes += (to_string(code.first) + "  " + old_code + "  " + code.second + "\n");
     }
     return codes;
 }
@@ -73,7 +76,7 @@ void Huffman::__print(Node *node, const string &code_str) {
 
     if (node->data != INTERNAL) {
         string old_code = bitset<8>((unsigned int) node->data).to_string();
-        cout << node->data << "  " << old_code << "  " << code_str << "\n";
+        cout << left << setw(4) << node->data << "  " << old_code << "  " << code_str << "\n";
         this->generated_codes[node->data] = code_str;
     }
 
@@ -83,7 +86,7 @@ void Huffman::__print(Node *node, const string &code_str) {
 
 void Huffman::__generate() {
     // Create a priority queue & inserts all characters
-    for (pair<int, char> cur: this->freq_arr)
+    for (pair<int, int> cur: this->freq_arr)
         this->heap.push(new Node(cur.second, cur.first));
 
     if (heap.empty()) {
