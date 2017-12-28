@@ -7,12 +7,6 @@
 
 Huffman::Huffman(map<string, int> loaded_codes) {
     this->loaded_codes = move(loaded_codes);
-
-    // print loaded codes
-    cout << "\n\nLoaded codes:\n";
-    for (pair<string, int> code: this->loaded_codes)
-        cout << left << setw(4) << code.second << "  " << code.first << endl;
-    cout << "\n\n";
 }
 
 Huffman::Huffman(map<int, int> reversed_freq_map) {
@@ -21,7 +15,7 @@ Huffman::Huffman(map<int, int> reversed_freq_map) {
 
     cout << "\n\nCodes:\n";
     __print(this->root);
-    cout << "\n\n";
+    cout << "\n";
 }
 
 vector<int> Huffman::decode(deque<int> encoded_file) {
@@ -60,7 +54,7 @@ string Huffman::get_codes() {
     codes += string(to_string(this->generated_codes.size()) + "\n");
     for (pair<int, string> code: this->generated_codes) {
         string old_code = bitset<8>((unsigned int) code.first).to_string();
-        codes += (to_string(code.first) + "  " + old_code + "  " + code.second + "\n");
+        codes += (to_string(code.first) + " " + old_code + " " + code.second + "\n");
     }
     return codes;
 }

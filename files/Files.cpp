@@ -112,5 +112,5 @@ void compare_file_size(const string &in_file, const string &out_file) {
 
     cout << "\n\n" << in_file << " size: " << original / 1024 << " KB\n";
     cout << out_file << " size: " << compressed / 1024 << " KB\n";
-    cout << "compression Ratio: " << (original - compressed) / original * 100 << " %\n\n";
+    cout << "compression Ratio: " << (original - compressed) / original * 100 << " %\n";
 }
