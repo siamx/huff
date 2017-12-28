@@ -86,7 +86,6 @@ My_File read_encoded_file(const string &in_file) {
         }
     }
 
-    cnt %= 8;
     while (cnt--)
         content.pop_back();
 
@@ -99,7 +98,7 @@ My_File read_encoded_file(const string &in_file) {
 void write_encoded_file(const string &out_file, const string &content, const string &codes) {
     ofstream out(out_file, ios::out);
     out << codes;
-    out << 8 - (content.size() % 8) << endl;
+    out << (8 - (content.size() % 8)) % 8 << endl;
     string str_to_int;
     for (char c: content) {
         str_to_int.push_back(c);
