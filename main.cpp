@@ -1,13 +1,36 @@
 #include <dirent.h>
 #include <set>
+#include <sys/stat.h>
+#include <boost/algorithm/string/replace.hpp>
 #include "huffman/Huffman.h"
 #include "files/Files.h"
+
+set<string> dir_files;
+map<string, void (*)(const string &, const string &)> function_pointer;
 
 void run_encoding(const string &in_file, const string &out_file);
 
 void run_decoding(const string &in_file, const string &out_file);
 
-set<string> dir_files;
+void help() {
+    cout << "*** Huffman codes ***" << endl
+         << "Author: Ahmed Lotfy Siam" << endl
+         << "https://github.com/siamx/huff" << endl << endl
+         << "Usage:" << endl
+         << "    ./huff <flag> <input-file> <output-file>" << endl << endl
+         << "Flags:" << endl
+         << "    -e | --encode" << endl
+         << "        Compress input file." << endl
+         << "    -d | --decode" << endl
+         << "        Extract input file." << endl;;
+}
+
+void tree(const string &path);
+
+bool exist(const string &file) {
+    struct stat st = {0};
+    return stat(file.c_str(), &st) != -1;
+}
 
 void tree(const string &path) {
     DIR *dir;
@@ -19,40 +42,50 @@ void tree(const string &path) {
             tree(path + "/" + sub_dir); // NOLINT
         }
         closedir(dir);
-    } else
+    } else if (exist(path))
         dir_files.insert(path);
 }
 
 int main(int argc, char **argv) {
-    tree("test");
+    function_pointer["-d"] = run_decoding;
+    function_pointer["--decode"] = run_decoding;
+    function_pointer["decode"] = run_decoding;
 
-//    string file_name;
-//    if (argc == 2) {
-//        cout << "Compressing..\n";
-//        file_name = argv[1];
-//        My_File my_file = read_file(file_name);
-//        Huffman huffman(my_file.freq);
-//        string compressed = huffman.encode(my_file.content);
-//        write_encoded_file(file_name, compressed, huffman.get_codes());
-//    } else if (argc == 3) {
-//        string flag = argv[1];
-//        if (flag != "-x") {
-//            cout << "invalid params only -x is not_valid\n";
-//            exit(1);
-//        }
-//        cout << "Extracting..\n";
-//        file_name = argv[2];
-//        My_File my_file = read_encoded_file(file_name);
-//        Huffman huffman(my_file.loaded_codes);
-//        vector<int> original_file = huffman.decode(my_file.content);
-//        write_file(file_name.substr(file_name.find_last_of('.')), original_file);
-//    } else {
-//        cout << "invalid params\nCompress file -> ./huff [file name]\nExtract file  -> ./huff -x [file name]\n\n";
-//        exit(1);
-//    }
-    for (const string &file_name: dir_files) {
-        run_encoding(file_name, file_name + EXTENSION);
-        run_decoding(file_name + EXTENSION, file_name);
+    function_pointer[""] = run_encoding;
+    function_pointer["-e"] = run_encoding;
+    function_pointer["--encode"] = run_encoding;
+    function_pointer["encode"] = run_encoding;
+
+    string in = "test.huff", out = "test", flag = "decode";
+
+    tree(in);
+
+    if (function_pointer.find(flag) == function_pointer.end()) {
+        cout << "invalid flag\n";
+        help();
+        exit(1);
+    }
+    if (dir_files.empty()) {
+        cout << "no such file or directory\n";
+        exit(1);
+    }
+    if (exist(out)) {
+        cout << "out file already exists\n";
+        exit(1);
+    }
+
+    for (const string &path: dir_files) {
+        string new_path = path;
+        boost::replace_first(new_path, in, out);
+
+        // if this file is in directory
+        if (new_path.find('/') != new_path.npos) {
+            string folder_path = new_path.substr(0, new_path.find_last_of('/'));
+            if (!exist(folder_path))
+                mkdir(folder_path.c_str(), 0700);
+        }
+
+        function_pointer[flag](path, new_path);
     }
 
     return 0;
@@ -66,6 +99,8 @@ void run_encoding(const string &in_file, const string &out_file) {
     string compressed = huffman.encode(file.content);
 
     write_encoded_file(out_file, compressed, huffman.get_codes());
+
+    compare_file_size(in_file, out_file);
 }
 
 void run_decoding(const string &in_file, const string &out_file) {
