@@ -12,14 +12,11 @@
 
 My_File read_file(const string &in_file) {
     My_File file = My_File();
-    ifstream in(in_file);
+    ifstream in(in_file, ios::binary);
 
     while (true) {
         int c = in.get();
         if (c == EOF) break;
-        if (c == ' ') c = SPACE;
-        if (c == '\n') c = NEW_LINE;
-        if (c == '\t') c = TAB;
         file.content.push_back(c);
         file.freq[c]++;
     }
@@ -30,23 +27,20 @@ My_File read_file(const string &in_file) {
 
 void write_file(const string &out_file, vector<int> &content) {
     ofstream out(out_file, ios::out);
-    for (int i: content) {
-        if (i == SPACE) out << " ";
-        else if (i == NEW_LINE) out << endl;
-        else if (i == TAB) out << "\t";
-        else out << (char) i;
-    }
+    for (int i: content)
+        out << (char) i;
     out.close();
 }
 
-string char_to_bits(char c) {
-    return bitset<8>((unsigned char) c).to_string();
+string int_to_bits(int c) {
+    return bitset<8>((unsigned int) c).to_string();
 }
 
 My_File read_encoded_file(const string &in_file) {
-    ifstream in(in_file, ios::in);
+    ifstream in(in_file, ios::binary);
     string str;
     My_File my_file;
+
     in >> str;
     if (str != ENCODED) {
         my_file.not_valid = true;
@@ -58,32 +52,21 @@ My_File read_encoded_file(const string &in_file) {
     in >> cnt;
     map<string, int> loaded_codes;
     while (cnt--) {
-        string key, code, new_code;
-        in >> key >> code >> new_code;
-        loaded_codes[new_code] = key[0];
+        string new_code;
+        int key;
+        in >> key >> new_code >> new_code;
+        loaded_codes[new_code] = key;
     }
-
 
     in >> cnt;          // last byte bits
     getline(in, str);   // discard the new line char '\n'
 
     deque<int> content;
-    string binary_str;
-    bool line_cnt = false;
-
-    while (getline(in, str)) {
-        if (line_cnt) {
-            binary_str = char_to_bits('\n');
-            for (int bin: binary_str)
-                content.push_back(bin);
-        }
-
-        line_cnt = true;
-        for (char &i : str) {
-            binary_str = char_to_bits(i);
-            for (int bin: binary_str)
-                content.push_back(bin);
-        }
+    int c;
+    while ((c = in.get()) != EOF) {
+        string binary_str = int_to_bits(c);
+        for (int bit: binary_str)
+            content.push_back(bit);
     }
 
     while (cnt--)
@@ -129,5 +112,5 @@ void compare_file_size(const string &in_file, const string &out_file) {
 
     cout << "\n\n" << in_file << " size: " << original / 1024 << " KB\n";
     cout << out_file << " size: " << compressed / 1024 << " KB\n";
-    cout << "Compression Ratio: " << (original - compressed) / original * 100 << " %\n\n";
+    cout << "compression Ratio: " << (original - compressed) / original * 100 << " %\n\n";
 }

@@ -10,11 +10,7 @@
 #include <string>
 #include <map>
 
-#define EXTENSION ".huff"
 #define ENCODED "\\\\ENCODED\\\\"
-#define SPACE '$'
-#define NEW_LINE '%'
-#define TAB '^'
 
 using namespace std;
 
