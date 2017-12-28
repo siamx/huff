@@ -6,16 +6,16 @@
 #define HUFFMAN_COMPRESSION_DECOMPRESSION_NODE_H
 
 
-#define INTERNAL '~'
+#define INTERNAL (-2147483648)
 
 class Node {
 public:
-    char data;
+    int data = INTERNAL;
     int freq;
     Node *left = nullptr;
     Node *right = nullptr;
 
-    Node(char data, int freq) {
+    Node(int data, int freq) {
         this->data = data;
         this->freq = freq;
     }
