@@ -64,7 +64,7 @@ My_File read_encoded_file(const string &in_file) {
     }
 
 
-    in >> cnt;          // read number of bits
+    in >> cnt;          // last byte bits
     getline(in, str);   // discard the new line char '\n'
 
     deque<int> content;
@@ -86,7 +86,8 @@ My_File read_encoded_file(const string &in_file) {
         }
     }
 
-    while (content.size() > cnt)
+    cnt %= 8;
+    while (cnt--)
         content.pop_back();
 
     my_file.not_valid = false;
@@ -98,7 +99,7 @@ My_File read_encoded_file(const string &in_file) {
 void write_encoded_file(const string &out_file, const string &content, const string &codes) {
     ofstream out(out_file, ios::out);
     out << codes;
-    out << content.size() << endl;
+    out << 8 - (content.size() % 8) << endl;
     string str_to_int;
     for (char c: content) {
         str_to_int.push_back(c);
