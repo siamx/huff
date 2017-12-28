@@ -12,6 +12,8 @@ void run_encoding(const string &in_file, const string &out_file);
 
 void run_decoding(const string &in_file, const string &out_file);
 
+void mother_of_functions(const string &flag, string in, string out);
+
 void help() {
     cout << endl
          << "*** Huffman codes ***" << endl
@@ -21,9 +23,11 @@ void help() {
          << "        ./huff  <flag>  <input-file>  <output-file>" << endl << endl
          << "Flags:" << endl
          << "        -e | --encode" << endl
-         << "                Compress input file." << endl << endl
+         << "                Compress input file (default flag)." << endl << endl
          << "        -d | --decode" << endl
-         << "                Extract input file." << endl << endl;
+         << "                Extract input file." << endl << endl
+         << "        -h | --help" << endl
+         << "                Display this help menu." << endl << endl;
 }
 
 bool exist(const string &file) {
@@ -48,27 +52,28 @@ void tree(const string &path) {
 }
 
 int main(int argc, char **argv) {
-    string in = "test", out = "test-encoded", flag = "encode";
+    string in, out, flag = "encode";
 
-    if (argc == 3) {
-        in = argv[2];
-        out = argv[3];
+    if (argc <= 2) {
+        help();
+        exit(1);
+    } else if (argc == 3) {
+        in = argv[1];
+        out = argv[2];
     } else if (argc == 4) {
         flag = argv[1];
         in = argv[2];
         out = argv[3];
+    } else {
+        cout << "invalid args\n";
+        help();
+        exit(1);
     }
-//    else {
-//        cout << "invalid args\n";
-//        help();
-//        exit(1);
-//    }
 
     function_pointer["-d"] = run_decoding;
     function_pointer["--decode"] = run_decoding;
     function_pointer["decode"] = run_decoding;
 
-    function_pointer[""] = run_encoding;
     function_pointer["-e"] = run_encoding;
     function_pointer["--encode"] = run_encoding;
     function_pointer["encode"] = run_encoding;
@@ -100,7 +105,7 @@ int main(int argc, char **argv) {
                 mkdir(folder_path.c_str(), 0700);
         }
 
-        function_pointer[flag](path, new_path);
+        mother_of_functions(flag, path, new_path);
     }
 
     return 0;
@@ -128,4 +133,13 @@ void run_decoding(const string &in_file, const string &out_file) {
     vector<int> decoded_data = huffman.decode(file.content);
 
     write_file(out_file, decoded_data);
+}
+
+void mother_of_functions(const string &flag, string in, string out) {
+    clock_t time = clock();
+
+    function_pointer[flag](in, out);
+
+    time = clock() - time;
+    cout << "run time: " << (double) time / CLOCKS_PER_SEC << " sec\n";
 }

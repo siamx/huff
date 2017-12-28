@@ -2,6 +2,8 @@
 
 * build 
     ```bash
+    git clone https://github.com/siamx/huff
+    cd huff
     make
     ```
 
@@ -9,12 +11,12 @@
     ```bash
     # ./huff [input file] [output file]
     
-    ./huff src.txt src.compressed
+    ./huff src.txt src.huff
     ```
     
 * extract
     ```bash
-    # ./huff -x [input file] [output file]
+    # ./huff -d [input file] [output file]
 
-    ./huff -x src.compressed src.txt
+    ./huff -d src.compressed src.txt
     ```
