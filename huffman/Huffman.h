@@ -20,8 +20,16 @@ using namespace std;
 
 class Huffman {
 public:
+    /**
+     * @brief de-compression constructor
+     * @param loaded_code codes read from encoded file header
+     */
     explicit Huffman(map<string, int> loaded_code);
 
+    /**
+     * @brief compression constructor
+     * @param reversed_freq_map char's occurrence frequency
+     */
     explicit Huffman(map<int, int> reversed_freq_map);
 
     string get_codes();
