@@ -30,8 +30,7 @@ An implementation of huffman codes, to compress & decompress files, folders & bi
 ## implementation description
 
 * `Files.h` & `Files.cpp`:
-    * These two files are responsible for reading & writing normal files
-        and reading & writing encoded files
+    * These two files are responsible for reading & writing normal & encoded files.
     
 * `Node.h` the core data structure of huffman tree, it consists of:
     * Data (int)
@@ -45,11 +44,11 @@ An implementation of huffman codes, to compress & decompress files, folders & bi
     * `vector<int> decode(deque<int> encoded_file);`
     * `string encode(deque<int> str);`
 
-## Header format is the following:
+## Header format is:
 
 ```bash
-\\ENCODED\\                 # Encoded flag, must exist. If the decoder did not find it, the program terminates
-9                                  # Number of written codes
+\\ENCODED\\           # Encoded flag, must exist. If the decoder did not find it, the program terminates
+9                     # Number of written codes
 10 00001010 0001      # Code sample, <byte value> <old binary code> <new assigned code>
 32 00100000 001
 97 01100001 1
@@ -59,5 +58,5 @@ An implementation of huffman codes, to compress & decompress files, folders & bi
 102 01100110 000001
 103 01100111 000010
 104 01101000 0000111
-5                                   # Trailing bits at last byte, to be removed
+5                     # Trailing bits at last byte, to be removed
 ```
