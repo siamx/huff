@@ -9,9 +9,8 @@ Huffman::Huffman(map<string, int> loaded_codes) {
     this->loaded_codes = move(loaded_codes);
 }
 
-Huffman::Huffman(map<int, int> reversed_freq_map) {
-    __build_freq_map(move(reversed_freq_map));
-    __generate();
+Huffman::Huffman(map<int, int> freq_map) {
+    __generate(freq_map);
 
     cout << "\n\nCodes:\n";
     __print(this->root);
@@ -59,12 +58,6 @@ string Huffman::get_codes() {
     return codes;
 }
 
-void Huffman::__build_freq_map(map<int, int> reversed_freq_map) {
-    for (pair<int, int> reversed_pair: reversed_freq_map)
-        this->freq_arr.emplace_back(make_pair(reversed_pair.second, reversed_pair.first));
-    sort(freq_arr.begin(), freq_arr.end());
-}
-
 void Huffman::__print(Node *node, const string &code_str) {
     if (!node) return;
 
@@ -78,10 +71,10 @@ void Huffman::__print(Node *node, const string &code_str) {
     this->__print(node->right, code_str + "1");
 }
 
-void Huffman::__generate() {
+void Huffman::__generate(map<int, int> freq_map) {
     // Create a priority queue & inserts all characters
-    for (pair<int, int> cur: this->freq_arr)
-        this->heap.push(new Node(cur.second, cur.first));
+    for (pair<int, int> cur: freq_map)
+        this->heap.push(new Node(cur.first, cur.second));
 
     if (heap.empty()) {
         cout << "Error: Empty file\n";

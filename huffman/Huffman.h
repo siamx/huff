@@ -28,9 +28,9 @@ public:
 
     /**
      * @brief compression constructor
-     * @param reversed_freq_map char's occurrence frequency
+     * @param freq_map char's occurrence frequency
      */
-    explicit Huffman(map<int, int> reversed_freq_map);
+    explicit Huffman(map<int, int> freq_map);
 
     string get_codes();
 
@@ -40,16 +40,13 @@ public:
 
 private:
     Node *root;
-    vector<pair<int, int> > freq_arr;
     map<int, string> generated_codes;
     map<string, int> loaded_codes;
     priority_queue<Node *, vector<Node *>, order_by_freq> heap;
 
-    void __build_freq_map(map<int, int> reversed_freq_map);
-
     void __print(Node *node, const string &code_str = "");
 
-    void __generate();
+    void __generate(map<int, int> freq_map);
 };
 
 

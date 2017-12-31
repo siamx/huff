@@ -52,11 +52,11 @@ void tree(const string &path) {
 }
 
 int main(int argc, char **argv) {
-    string in, out, flag = "encode";
+    string in = "src.txt", out = "src.huff", flag = "encode";
 
     if (argc <= 2) {
-        help();
-        exit(1);
+//        help();
+//        exit(1);
     } else if (argc == 3) {
         in = argv[1];
         out = argv[2];
